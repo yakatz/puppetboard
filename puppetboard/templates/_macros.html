@@ -32,7 +32,7 @@
   {% endif %}
 {%- endmacro %}
 
-{% macro datatable_init(table_html_id, ajax_url, default_length, length_selector, extra_options=None) -%}
+{% macro datatable_init(table_html_id, ajax_url, default_length, length_selector, filter_unicode=True, extra_options=None) -%}
   // Init datatable
   $.fn.dataTable.ext.errMode = 'throw';
 
@@ -56,7 +56,8 @@
     "search": {"regex": true},
     // Default sort
     "order": [[ 0, "desc" ]],
-   // Rendering - add rendering options for columns
+    {% if filter_unicode %}
+    // Rendering - add rendering options for columns
     "columnDefs": [ {
       "targets": -1,
       "data:": null,
@@ -66,7 +67,8 @@
        shortc = shortb.replace(/'/g, " "); 
        return shortc;
        }}],
-      // Custom options
+    {% endif %}
+    // Custom options
     {% if extra_options %}{% call extra_options() %}Callback to parent defined options{% endcall %}{% endif %}
   });
 
